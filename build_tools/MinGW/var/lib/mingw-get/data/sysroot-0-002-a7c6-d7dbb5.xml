@@ -79,4 +79,10 @@
         <requires eq="gcc-core-%-mingw32-bin.tar" />
         <requires eq="mingw32-libstdc++-%-mingw32-dll-6.tar" />
     </installed>
+    <installed tarname="make-3.82.90-2-mingw32-cvs-20120902-bin.tar.lzma">
+        <requires eq="mingw32-libintl-*-mingw32-*-dll-8.tar" />
+    </installed>
+    <installed tarname="make-3.82.90-2-mingw32-cvs-20120902-doc.tar.lzma" />
+    <installed tarname="make-3.82.90-2-mingw32-cvs-20120902-lang.tar.lzma" />
+    <installed tarname="make-3.82.90-2-mingw32-cvs-20120902-lic.tar.lzma" />
 </sysroot>
