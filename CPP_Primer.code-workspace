@@ -11,7 +11,7 @@
         "terminal.integrated.env.windows": 
 		{
             "PATH": "${workspaceFolder}/build_tools/MinGW;${workspaceFolder}/build_tools/MinGW/bin;${workspaceFolder}/build_tools;${workspaceFolder}/build_tools/CMake/bin;${env:PATH}",
-            "CPP_PRIMER_REPO": "${workspaceFolder}"
+            "CPP_PRIMER_WS_PATH": "${workspaceFolder}"
         },
 	},
 }

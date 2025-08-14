@@ -19,6 +19,7 @@ cmake_minimum_required(VERSION 3.10)
 # Projects should not rely on <PROJECT-NAME>_SOURCE_DIR or <PROJECT-NAME>_BINARY_DIR holding a particular value outside of the scope of the call to project() or one of its child scopes.
 project(CPP_Primer)
 
+# PROJECT_SOURCE_DIR - By default contains the absolute path where CMakeLists.txt is placed.
 message(STATUS "Project Soource Directory: ${PROJECT_SOURCE_DIR}")
 
 #
@@ -40,7 +41,7 @@ if(NOT CMAKE_BUILD_TYPE)
     message("CMAKE_BUILD_TYPE is not set, defaulting to Debug.")
     set(CMAKE_BUILD_TYPE Debug)
 endif()
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+# message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 # Converts the string to all lower case.
 # string(TOLOWER <string> <output_variable>)
