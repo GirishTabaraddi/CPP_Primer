@@ -20,7 +20,7 @@ cmake_minimum_required(VERSION 3.10)
 project(CPP_Primer)
 
 # PROJECT_SOURCE_DIR - By default contains the absolute path where CMakeLists.txt is placed.
-message(STATUS "Project Soource Directory: ${PROJECT_SOURCE_DIR}")
+message(STATUS "Project Source Directory: ${PROJECT_SOURCE_DIR}")
 
 #
 set(BUILD_TOOLS_PATH "${PROJECT_SOURCE_DIR}/../build_tools/")

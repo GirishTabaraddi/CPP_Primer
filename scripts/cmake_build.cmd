@@ -6,6 +6,10 @@
 :: The @ is a special operator to suppress printing of the command line. Once we set ECHO'ing to OFF, we do not need the @ operator again in the script commands.
 @ECHO OFF
 
+:: Delayed Expansion will cause variables within a batch file to be expanded at execution time rather than at parse time, this option is turned on with the below command.
+:: When Delayed Expansion is in effect, variables can be immediately read using !variable_name!
+setlocal EnableDelayedExpansion
+
 :: Printing of commands in the script can be restored using the below command (commented as of now to avoid conflict with the above statement).
 :: ECHO ON
 
@@ -17,12 +21,34 @@ SET CPP_PRIMER_WS_PATH=%~dp0..
 :: The value of a variable can be read by prefixing and suffixing the variable name with % operator. Here, I have obtained the value of this projects workspace path to navigate to the build folder and save it in a variable called BUILD_DIR.
 SET BUILD_DIR=%CPP_PRIMER_WS_PATH%\source_code\build
 
+:: Through the command line arguments and using if else statements, set BUILD_TYPE to a valid value
+if "%~1"=="" (
+    echo Select Build Type:
+    echo    1.  Debug
+    echo    2.  Release
+    set /p BUILD_TYPE_CHOICE=Enter your choice [1-2]:
+    
+    if !BUILD_TYPE_CHOICE!==1 (
+        set BUILD_TYPE=Debug
+    ) else (
+        if !BUILD_TYPE_CHOICE!==2 (
+            set BUILD_TYPE=Release
+        ) else (
+            echo [ERROR] Invalid Build Type Choice !BUILD_TYPE_CHOICE!
+            exit /b 1
+        )
+    )
+) else (
+    set BUILD_TYPE=%~1%
+)
+
 :: cd means change directory.
 :: /d means change the drive if the target path is on a different drive.
 :: The CMake should run from the build directory and hence before the CMake is executed, we have to navigate to that path.
 cd /d "%BUILD_DIR%"
 
-:: =====Run CMake=====
+:: ===== Run CMake to generate a buildsystem =====
+echo Running CMake configuration for (%BUILD_TYPE%)...
 :: CMake executable is called through cmake keyword. There are many arguments to this cmake, a few used ones are listed below with explanation.
 :: -S <path-to-source-tree> - the source tree must contain the CMakeLists.txt file at the root of its path.
 :: -B <path-to-build-tree> - the build tree will be created automatically if it does not already exist.
@@ -30,4 +56,14 @@ cd /d "%BUILD_DIR%"
 :: -D<VAR>=<VALUE> - In CMake, -D means "Define a CMake cache variable". When a value is passed, it stores <VALUE> in its CMake cache (CMakeCache.txt) under the name <VAR>.
 cmake -S %CPP_PRIMER_WS_PATH%\source_code ^
     -B "%BUILD_DIR%" ^
-    -G "MinGW Makefiles"
+    -G "MinGW Makefiles" ^
+    -DCMAKE_BUILD_TYPE=%BUILD_TYPE%
+
+:: ===== BUILD PROJECT =====
+echo Building project...
+cmake --build . --config %BUILD_TYPE%
+
+:: === DONE ===
+echo.
+echo Build completed successfully for (%BUILD_TYPE%)!
+endlocal
