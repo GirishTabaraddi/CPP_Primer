@@ -47,3 +47,40 @@ endif()
 # string(TOLOWER <string> <output_variable>)
 string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
+# CMAKE_SOURCE_DIR refers the top directory containing the root file CMakeLists.txt 
+message("CMAKE_SOURCE_DIR : " ${CMAKE_SOURCE_DIR})
+
+# CMAKE_BINARY_DIR refers to the top directory where CMake generates the build files.
+message("CMAKE_BINARY_DIR : " ${CMAKE_BINARY_DIR})
+
+if(NOT DEFINED EXERCISE_NAME)
+    set(EXERCISE_NAME "Exercise_01")
+endif()
+message(STATUS "Exercise Selected: " ${EXERCISE_NAME})
+
+# In CMake, Runtime outputs like .exe, .out files go in this directory and here it is classified into each exercises.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/source_code/${EXERCISE_NAME}/bin/${CMAKE_BUILD_TYPE})
+message(STATUS "CMake Runtime Directory (.exe, .out): " ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+# In CMake, Archive outputs like .a, .lib files go in this directory and here it is placed in the build directory for each exercises.
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${EXERCISE_NAME}/${CMAKE_BUILD_TYPE}/lib)
+
+# GLOB_RECURSE mode will traverse all the subdirectories of the matched directory and match the files.
+# Here we are grabbing all the .h files from all of the exercises.
+file(GLOB_RECURSE EXERCISE_HEADER_FILES
+    ${CMAKE_SOURCE_DIR}/source_code/${EXERCISE_NAME}/inc/*.h
+)
+
+# Similar to header files above, the source files are collected and stored in the variable EXERCISE_SOURCE_FILES.
+file(GLOB_RECURSE EXERCISE_SOURCE_FILES
+    ${CMAKE_SOURCE_DIR}/source_code/${EXERCISE_NAME}/src/*.c
+)
+
+# Add an executable to the project using the specified source files.
+add_executable(
+    ${EXERCISE_NAME}.elf
+    ${EXERCISE_SOURCE_FILES}
+    ${EXERCISE_HEADER_FILES}
+)
+

@@ -18,6 +18,24 @@ setlocal EnableDelayedExpansion
 :: Since, I want to set the root path of the project one directory higher .. is used.
 SET CPP_PRIMER_WS_PATH=%~dp0..
 
+:: === Exercise Name from Argument or Prompt ===
+if "%~1"=="" (
+    echo Select a project to build:
+    echo    1. Exercise_02
+    set /p CHOICE=Enter choice [1-11]:  
+
+    for /f "tokens=* delims= " %%A in ("!CHOICE!") do set CHOICE=%%A
+
+    if "!CHOICE!"=="1" (
+        set "EXERCISE_SELECTED=Exercise_02"
+    ) else (
+        echo [ERROR] Invalid choice: !CHOICE!
+        exit /b 1
+    )
+) else (
+    set "EXERCISE_SELECTED=%~1"
+)
+
 :: The value of a variable can be read by prefixing and suffixing the variable name with % operator. Here, I have obtained the value of this projects workspace path to navigate to the build folder and save it in a variable called BUILD_DIR.
 SET BUILD_DIR=%CPP_PRIMER_WS_PATH%\source_code\build
 
@@ -57,8 +75,9 @@ echo Running CMake configuration for (%BUILD_TYPE%)...
 cmake -S %CPP_PRIMER_WS_PATH%\source_code ^
     -B "%BUILD_DIR%" ^
     -G "MinGW Makefiles" ^
-    -DCMAKE_BUILD_TYPE=%BUILD_TYPE%
-
+    -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+    -DEXERCISE_NAME=%EXERCISE_SELECTED%
+    
 :: ===== BUILD PROJECT =====
 echo Building project...
 cmake --build . --config %BUILD_TYPE%
